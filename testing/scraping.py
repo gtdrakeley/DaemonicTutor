@@ -1,23 +1,18 @@
 import re
-import urllib2
+import urllib.request
 
-from math import ceil
 from time import sleep
 
-page = urllib2.urlopen('http://magiccards.info/sitemap.html')
+#load page
+page = urllib.request.urlopen('http://magiccards.info/sitemap.html')
 html = page.read()
-lang_english = re.search('<a name="en">.+?</table>', html, flags=re.DOTALL).group()
-'''
-lines = [english.group()[line*80:line*80+80] \
-        for line in range(int(ceil(len(english.group()) / 80.0)))]
-for line in lines:
-    print line
-    sleep(0.1)
-'''
-en_set_groups = re.findall('<h3>([\w\s]+)</h3>(.+?)</li></ul></li></ul>', lang_english)
-'''
-for match in en_set_groups:
-    print match
-    print
+#get english language
+lang_english = re.search(b'<a name="en">.+?</table>', html, flags=re.DOTALL).group()
+#get block groups
+en_block_groups = re.findall(b'<h3>([\w\s\'"-]+)</h3>(.+?)</li></ul></li></ul>', lang_english)
+for block_group in en_block_groups:
+    name, data = block_group
+    sleep(5)
+    print(name)
     sleep(1)
-'''
+    print(data)
